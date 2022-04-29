@@ -8,6 +8,7 @@ from cpovc_registry.functions import get_geo_list, get_all_geo_list
 from cpovc_registry.models import RegOrgUnit
 from cpovc_main.models import SchoolList
 from cpovc_ovc.models import OVCFacility
+from parsley.decorators import parsleyfy
 # New lists
 WB_AD_GEN_5_ChoiceList=WB_AD_SAF_32_6_CHOICELIST=WB_AD_SAF_32_2_CHOICELIST=WB_AD_SAF_28_CHOICELIST=WB_AD_SAF_27_1_CHOICELIST=WB_AD_SAF_26_CHOICELIST=WB_AD_HEL_24_1_CHOICELIST=WB_AD_HEL_21_1_CHOICELIST=WB_AD_SCH_7_CHOICELIST=WB_AD_SCH_12_2_CHOICELIST=WB_AD_HEL_20_4_CHOICELIST=WB_AD_SCH_13_2_CHOICELIST = (('TBD1', 'TBD1'), ('TBD2', 'TBD2'),('TBD3', 'TBD3'))
 YESNO_CHOICES = (('AYES', 'Yes'), ('ANNO', 'No'))
@@ -8145,3 +8146,61 @@ class DREAMS_FORM(forms.Form):
                #'data-parsley-required': "true",
                #'data-parsley-group': 'group0',
                'rows': '3'}))
+    
+
+class CaseTransferForm(forms.Form): 
+    
+    # TRANSFER_RSN CHOICES
+    CHOICES = (
+        ('Child ages out of the program prior to achieving their case plan', 'Child ages out of the program prior to achieving their case plan'),
+        ('Child and or family plans to relocate prior to achieving their case plan', 'Child and or family plans to relocate prior to achieving their case plan'),
+        ('Program relocates or closes before recommended interventions have been completed', 'Program relocates or closes before recommended interventions have been completed'),
+        ('Interventions outlining case plan have been achieved', 'Interventions outlining case plan have been achieved'),
+        ('Service required not available', 'Service required not available')
+        )
+    # Case Transfer Form
+    DATE = forms.DateField(widget=forms.TextInput(
+        attrs={'placeholder': _('Transfer Date'),
+               'class': 'form-control',
+               'type': 'date',
+               'id': 'transfer_date',
+               'data-parsley-required': "false",
+               'data-parsley-group': 'group0'
+               # type': 'hidden'
+               }),required = False)
+    TRANSFER_RSN = forms.ChoiceField(
+        choices=CHOICES, widget=forms.Select(attrs={'class':'form-control', 'data-parsley-required': "false",'data-parsley-group': 'group0'}),required = False)
+    
+    
+    FOLLOW_UP_DATE =forms.DateField(
+        widget=forms.TextInput(
+        attrs={'placeholder': _('Follow up Date'),
+               'class': 'form-control',
+               'type': 'date',
+               'id': 'transfer_date',
+               'data-parsley-required': "false",
+               'data-parsley-group': 'group0'
+               # type': 'hidden'
+               },
+        ),
+        required = False
+    )
+    COMMENT = forms.CharField(widget=forms.Textarea(
+        attrs={'placeholder': _('Comment'),
+               'class': 'form-control',
+               'id': 'Comment',
+               'data-parsley-required': "false",
+               'data-parsley-group': 'group0',
+               'rows': '3'
+               }
+        ),
+        required = False
+    )
+    CHECKBOX = forms.CharField(widget=forms.widgets.CheckboxInput(
+        attrs={'class': 'checkbox-inline',
+               'data-parsley-required': "false",
+               'data-parsley-group': 'group0'
+               }))
+   
+   
+   

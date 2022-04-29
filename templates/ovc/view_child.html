@@ -319,6 +319,10 @@ Caregiver details | {{care_giver}}
                             <a href="{% url 'new_caseplan' id=creg.person_id %}">
                         <button type="button" class="btn btn-primary"> <i class="fa fa-folder-open"></i> Case Plan Template</button>
                         </a>
+                        <a href="{% url 'new_case_transfer' id=creg.person_id %}">
+                            <button type="button" class="btn btn-primary"> <i class="fa fa-folder-open"></i> Case Transfer Form</button>
+                        </a>
+                    </a>
                         <hr/>
                             <a href="{% url 'new_caseplan_monitoring' id=creg.person_id %}">
                         <button type="button" class="btn btn-primary"> <i class="fa fa-check-circle"></i>Monitoring HHRCPA </button>

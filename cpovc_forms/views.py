@@ -23,7 +23,7 @@ from cpovc_forms.forms import (
     OVC_CaseEventForm, DocumentsManager, OVCSchoolForm, OVCBursaryForm,
     BackgroundDetailsForm, OVC_FTFCForm, OVCCsiForm, OVCF1AForm, OVCHHVAForm, Wellbeing,
     GOKBursaryForm, CparaAssessment, CparaMonitoring, CasePlanTemplate, WellbeingAdolescentForm, HIV_SCREENING_FORM,
-    HIV_MANAGEMENT_ARV_THERAPY_FORM, HIV_MANAGEMENT_VISITATION_FORM, DREAMS_FORM)
+    HIV_MANAGEMENT_ARV_THERAPY_FORM, HIV_MANAGEMENT_VISITATION_FORM, DREAMS_FORM, CaseTransferForm)
 
 from .models import (
     OVCEconomicStatus, OVCFamilyStatus, OVCReferral, OVCHobbies, OVCFriends,
@@ -59,6 +59,14 @@ from cpovc_registry.functions import get_list_types, extract_post_params
 from cpovc_ovc.functions import get_ovcdetails
 from .functions import create_fields, create_form_fields, save_form1b, save_bursary
 from .documents import create_mcert
+
+
+def new_graduation_tool(request):
+    #return ("Hello world")
+    if request.method == 'POST':
+        return ('Hello world')
+    else:
+        return render(request, "forms/new_graduation_tool.html")
 
 
 def validate_serialnumber(user_id, subcounty, serial_number):
@@ -6092,6 +6100,8 @@ def new_bursary_info(request):
                                     'status': 'Error'})
     return JsonResponse(jsonBursaryResponse, content_type='application/json',
                         safe=False)
+    
+
 
 
 # @login_required
@@ -6943,6 +6953,68 @@ def form1a_events(request, id):
                   'forms/form1a_events.html',
                   {'form': form, 'init_data': init_data,
                    'vals': vals})
+
+
+def case_transfer(request, id):
+    import pdb
+    init_data = RegPerson.objects.filter(pk=id)
+    
+    if request.method == 'POST':
+        
+        caseTransferForm = CaseTransferForm(request.POST)
+        
+        # pdb.set_trace()
+        if caseTransferForm.is_valid():
+            
+            caseTransferForm.cleaned_data
+        
+            
+            messages.success(request, 'Member(s) successfully transfered')
+        else:
+            messages.error(request, 'Error saving form!')
+        # pdb.set_trace()
+        return redirect('new_case_transfer/<int: id>/')
+        
+            
+    else:
+        child = RegPerson.objects.get(id=id)
+        care_giver = RegPerson.objects.get(id=OVCRegistration.objects.get(person=child).caretaker_id)
+        house_hold = OVCHouseHold.objects.get(id=OVCHHMembers.objects.get(person=child).house_hold_id)
+        # pdb.set_trace()
+        siblings = RegPersonsSiblings.objects.select_related().filter(
+        child_person=id, is_void=False, date_delinked=None)
+        hhold = OVCHHMembers.objects.get(
+            is_void=False, person_id=child.id)
+        # Get HH members
+        hhid = hhold.house_hold_id
+        hhmqs = OVCHHMembers.objects.filter(
+            is_void=False, house_hold_id=hhid)
+        hhmembers = hhmqs
+        # pdb.set_trace()
+        caseTransferForm = CaseTransferForm()
+        
+        
+        org_units= RegOrgUnit.objects.get()
+        # cache.set("org_uits",org_units)
+    
+        pdb.set_trace()
+        
+        return render(
+            request,
+            template_name=
+                'forms/case_transfer.html',
+            context={
+                'case_transfer_form' : caseTransferForm,
+                'init_data': init_data,
+                'siblings':siblings,
+                'care_giver': care_giver, 
+                'child':child,
+                'house_hold': house_hold,
+                'hhid':hhid,
+                'hhmqs':hhmqs,
+                'hhmembers':hhmembers
+                }
+        )
 
 
 # @login_required
