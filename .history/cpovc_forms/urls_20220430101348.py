@@ -173,23 +173,10 @@ urlpatterns = [
 
     # Dreams SerivceUptake Form
     re_path('dreamsform/new/(?P<id>\d+)/', views.new_dreamsform, name='new_dreamsform'),
+    path('graduation/new/', views.new_graduation_tool, name='new_graduation_tool'),
     
-#     path('bursary/new/', views.new_bursary_info, name='new_bursary_info'),
-#     path('bursary/edit/', views.edit_bursary_info, name='edit_bursary_info'),
-#     path('bursary/view/', views.view_bursary_info, name='view_bursary_info'),
-#     path('bursary/delete/', views.delete_bursary_info, name='delete_bursary_info'),
-#     re_path('bursary/followup/(?P<id>\d+)/', views.bursary_followup, name='bursary_followup'),
-#     path('bursary/manage/', views.manage_bursary, name='manage_bursary'),
-    
-    # Graduation Monitoring Tool
-#     path('graduation/new/', views.new_graduation_tool, name='new_graduation_tool'),
-#     path('graduation/edit/', views.edit_graduation_tool, name='edit_graduation_tool'),
-#     path('graduation/view/', views.view_grauation_tool, name='view_graduation_tool'),
-#     path('graduation/delete/', views.delete_graduation_info, name='delete_graduation_tool'),
-      path('graduation/new/', views.new_graduation_tool, name='new_graduation_tool'),
-      
       # Case Transfer Form
-      re_path('case-transfer/new/(?P<id>\d+)/', views.case_transfer, name='new_case_transfer'),
+#       re_path('case-transfer/new/(?P<id>\d+)/', views.case_transfer, name='new_case_transfer'),
 #       re_path('case-transfer/new/(?P<id>\d+)/', views.ovc_view_form, name='new_case_transfer'),
       
        
