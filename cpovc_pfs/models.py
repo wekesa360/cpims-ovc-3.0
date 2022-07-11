@@ -31,7 +31,7 @@ class OVCPreventiveRegistration(models.Model):
     group = models.ForeignKey(OVCPreventiveGroup, on_delete=models.CASCADE, null=True)
     school = models.ForeignKey(OVCSchool, on_delete=models.CASCADE, null=True)
     child_cbo = models.ForeignKey(RegOrgUnit, on_delete=models.CASCADE)
-    chv = models.ForeignKey(RegPerson, related_name='preventive_chv', null=true)
+    chv = models.ForeignKey(RegPerson, related_name='preventive_chv', null=True, on_delete=models.CASCADE)
     registration_date = models.DateField(default=timezone.now)
     is_active = models.BooleanField(default=True)
     exit_reason = models.CharField(max_length=4, null=True)
@@ -79,7 +79,7 @@ class OVCPreventiveEbi(models.Model):
     ebi_provider = models.ForeignKey(RegOrgUnit, on_delete=models.CASCADE, related_name='ebi_provide_fk')  # cbo
     ebi_session = models.CharField(max_length=4)  ##session e.g s1, s2,
     ebi_session_type = models.CharField(max_length=10)  ## general or makeup
-    place_of_ebi = models.ForeignKey('cpovc_main.SetupGeography', related_name='ebi_place')  # geo
+    place_of_ebi = models.ForeignKey('cpovc_main.SetupGeography', related_name='ebi_place', on_delete=models.CASCADE)  # geo
     date_of_encounter_event = models.DateField(default=timezone.now, null=True)
     event = models.ForeignKey(OVCPreventiveEvents, on_delete=models.CASCADE)
     ebi_grouping_id = models.UUIDField(default=uuid.uuid1, editable=False)
@@ -104,7 +104,7 @@ class OVCPreventiveService(models.Model):
     ebi_service_referred = models.CharField(max_length=4,
                                             null=True)  # service referred. Add ebi services to list general
     ebi_service_completed = models.CharField(max_length=4, null=True)  # yesno
-    place_of_ebi_service = models.ForeignKey('cpovc_main.SetupGeography', related_name='ebi_service_place')  # geo
+    place_of_ebi_service = models.ForeignKey('cpovc_main.SetupGeography', related_name='ebi_service_place', on_delete=models.CASCADE)  # geo
     date_of_encounter_event = models.DateField(default=timezone.now, null=True)
     event = models.ForeignKey(OVCPreventiveEvents, on_delete=models.CASCADE)
     ebi_grouping_id = models.UUIDField(default=uuid.uuid1, editable=False)
@@ -120,7 +120,7 @@ class OVCPreventiveService(models.Model):
 
 class OVCPrevEvaluation(models.Model):
     evaluation_id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
-    person = models.ForeignKey(RegPerson)
+    person = models.ForeignKey(RegPerson, on_delete=models.CASCADE)
     ref_caregiver = models.ForeignKey(RegPerson, on_delete=models.CASCADE, related_name='preval_caregiver')
     know_where = models.CharField(max_length=10)
     know_what = models.CharField(max_length=10)
@@ -165,7 +165,7 @@ class OVCPrevEvaluation(models.Model):
 class OVCPrevSinovuyoCaregiverEvaluation(models.Model):
     evaluation_id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
     person = models.ForeignKey(RegPerson, on_delete=models.CASCADE)
-    ref_caregiver = models.ForeignKey(RegPerson, on_delete=models.CASCADE, related_name='preval_caregiver')
+    ref_caregiver = models.ForeignKey(RegPerson, on_delete=models.CASCADE, related_name='preval_caregiver_caregiver')
     date_of_event = models.DateField(default=timezone.now)  # date_of-assessment
     bd_age = models.CharField(max_length=10)
     bd_sex = models.CharField(max_length=10)
@@ -226,8 +226,8 @@ class OVCPrevSinovuyoCaregiverEvaluation(models.Model):
 
 class OVCPrevSinovyoTeenEvaluation(models.Model):
     evaluation_id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
-    person = models.ForeignKey(RegPerson)
-    ref_caregiver = models.ForeignKey(RegPerson, on_delete=models.CASCADE, related_name='preval_caregiver')
+    person = models.ForeignKey(RegPerson, on_delete=models.CASCADE)
+    ref_caregiver = models.ForeignKey(RegPerson, on_delete=models.CASCADE, related_name='preval_teen_caregiver')
     date_of_event = models.DateField(default=timezone.now)  ## assessment date
     bd_age = models.CharField(max_length=10)
     bd_sex = models.CharField(max_length=10)

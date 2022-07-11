@@ -2,7 +2,7 @@ from django.shortcuts import render
 from cpovc_forms.forms import OVCSearchForm
 from .forms import OVCPMTCTRegistrationForm
 
-from cpovc_forms.functions import get_person_ids
+# from cpovc_forms.functions import get_person_ids
 from .models import OVCPMTCTRegistration
 from cpovc_forms.models import OVCCaseRecord
 from cpovc_registry.models import (
@@ -25,7 +25,7 @@ def pmtct_home(request):
         # person_type = 'TBVC'
         afc_ids, case_ids = {}, {}
         search_string = request.GET.get('search_name')
-        pids = get_person_ids(request, search_string)
+        # pids = get_person_ids(request, search_string)
         cases = RegPerson.objects.filter(is_void=False, id__in=pids)
         # Get case record sheet details
         crss = OVCCaseRecord.objects.filter(is_void=False, person_id__in=pids)
